@@ -1,7 +1,7 @@
 var gamesArray = {
   equipas: [
-    ["Team 1", "Team 2"], /* first matchup */
-    ["Team 3", "Team 4"]
+    ["Team 1"], ["Team 2"], /* first matchup */
+    ["Team 3"], ["Team 4"]
   ]  /* second matchup */,
   espacoResultados:             // List of brackets (single elimination, so only one bracket)
     [                     // List of rounds in bracket
@@ -21,66 +21,38 @@ var knownBrackets = [2, 4, 8, 16, 32];// brackets with "perfect" proportions (fu
 var exampleTeams;
 var bracketCount;
 
+//organized games array
+var listOrdered ;
 
 window.addEventListener("load", boot, false);
 
 function boot() {
   bracketCount = 0;
-   shuffle();
+
+  listOrdered = shuffle(gamesArray.equipas);
 
  // getBracket();
 }//boot
 
-function shuffle(){
-  gamesArray.equipas.forEach(element => {
-    let randomNumb = Math.floor(Math.random() * (5 - 1 +1) + 1);
-    console.log(randomNumb);
-  });
-  
+function shuffle(array){
+  //variaveis de auxilio
+  let j, x, i;
+  //ciclo que percorre o array para organizar o codigo
+  for (i = array.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = array[i];
+      array[i] = array[j];
+      array[j] = x;
+  }//ciclo
+  console.log(array);
+  return array;
+ 
 }//suffle
 
 function getBracket(base) {
+  
 
-  var closest = _.find(knownBrackets, function (k) { return k >= base; }),
-    byes = closest - base;
 
-  if (byes > 0) base = closest;
-
-  var brackets = [],
-    round = 1,
-    baseT = base / 2,
-    baseC = base / 2,
-    teamMark = 0,
-    nextInc = base / 2;
-
-  for (i = 1; i <= (base - 1); i++) {
-    var baseR = i / baseT,
-      isBye = false;
-
-    if (byes > 0 && (i % 2 != 0 || byes >= (baseT - i))) {
-      isBye = true;
-      byes--;
-    }
-
-    var last = _.map(_.filter(brackets, function (b) { return b.nextGame == i; }), function (b) { return { game: b.bracketNo, teams: b.teamnames }; });
-
-    brackets.push({
-      lastGames: round == 1 ? null : [last[0].game, last[1].game],
-      nextGame: nextInc + i > base - 1 ? null : nextInc + i,
-      teamnames: round == 1 ? [exampleTeams[teamMark], exampleTeams[teamMark + 1]] : [last[0].teams[_.random(1)], last[1].teams[_.random(1)]],
-      bracketNo: i,
-      roundNo: round,
-      bye: isBye
-    });
-    teamMark += 2;
-    if (i % 2 != 0) nextInc--;
-    while (baseR >= 1) {
-      round++;
-      baseC /= 2;
-      baseT = baseT + baseC;
-      baseR = i / baseT;
-    }
-  }
 
   renderBrackets(brackets);
 }//get brackets
@@ -89,7 +61,6 @@ function getBracket(base) {
  * Inject our brackets
  */
 function renderBrackets(struct) {
-  var groupCount = _.uniq(_.map(struct, function (s) { return s.roundNo; })).length;
 
   var group = $('<div class="group' + (groupCount + 1) + '" id="b' + bracketCount + '"></div>'),
     grouped = _.groupBy(struct, function (s) { return s.roundNo; });
