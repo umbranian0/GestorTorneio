@@ -28,8 +28,13 @@ window.addEventListener("load", boot, false);
 
 function boot() {
   bracketCount = 0;
+  
+  gamesArray.equipas = lerK("key_arrayEquipas");
 
+  console.log(gamesArray.equipas);
+  
   listOrdered = shuffle(gamesArray.equipas);
+
 
  // getBracket();
 }//boot
@@ -44,7 +49,7 @@ function shuffle(array){
       array[i] = array[j];
       array[j] = x;
   }//ciclo
-  console.log(array);
+ //console.log(array);
   return array;
  
 }//suffle
@@ -60,54 +65,7 @@ function getBracket(base) {
 /*
  * Inject our brackets
  */
-function renderBrackets(struct) {
 
-  var group = $('<div class="group' + (groupCount + 1) + '" id="b' + bracketCount + '"></div>'),
-    grouped = _.groupBy(struct, function (s) { return s.roundNo; });
-  for (g = 1; g <= groupCount; g++) {
-    var round = $('<div class="r' + g + '"></div>');
-    _.each(grouped[g], function (gg) {
-      if (gg.bye)
-        round.append('<div></div>');
-      else
-        round.append('<div><div class="bracketbox"><span class="info">' + gg.bracketNo + '</span><span class="teama" contenteditable>' + gg.teamnames[0] + '</span><span class="teamb" contenteditable>' + gg.teamnames[1] + '</span></div></div>');
-    });
-    group.append(round);
-  }
-  group.append('<div class="r' + (groupCount + 1) + '"><div class="final"><div class="bracketbox"><span class="teamc" contenteditable>' + _.last(struct).teamnames[_.random(1)] + '</span></div></div></div>');
-  $('#brackets').append(group);
-
-  bracketCount++;
-  $('html,body').animate({
-    scrollTop: $("#b" + (bracketCount - 1)).offset().top
-  });
-}//RenderBrackets
-
-/*
- * Build our bracket "model"
- */
-/*
-new Clipboard('.copyBtn', {
-  text: function (trigger) {
-    return $('#brackets')[0].outerHTML;
-  }
-});
-
-new Clipboard('.copyBtnCss', {
-  text: function (trigger) {
-    return $('style')[0].outerHTML + $('#brackets')[0].outerHTML;
-  }
-});
-
-$('#add').on('click', function () {
-  var opts = parseInt(prompt('Bracket size (number of teams):', 32));
-
-  if (!_.isNaN(opts) && opts <= _.last(knownBrackets))
-    getBracket(opts);
-  else
-    alert('The bracket size you specified is not currently supported.');
-});
-*/
 function guardaDados() {
 
 }

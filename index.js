@@ -6,9 +6,12 @@ var ID_FORM_CRIAR = "idFormCriar",
     ID_SUBMIT_CRIAR = "idSubmitCriar",
     ID_SECTION_FEEDBACK = "idSectionFeedback",
     ID_SUBMIT_GERAR = "idSubmitGerar";
+    
 
 var oFormCriar, oTextTorneio, oNumberQuantidade, oSubmitGerar,
     oSubmitCriar, oSectionFeedback;
+
+var arrayEquipas = [];
 
 function boot() {
     //associações
@@ -64,6 +67,8 @@ function guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas() {
     if (storageDisponivel()) {
         escreverKV("key_nome", oTextTorneio.value);
         escreverKV("key_quantidade", Number(oNumberQuantidade));
+       //todo
+        escreverKV("key_arrayEquipas", arrayEquipas);
     }
 }
 function comoReagirAoSubmitDaForm() {
@@ -89,14 +94,21 @@ function textoVazioNumInput(oInputText) {
 
 function criarCaixasNomeEquipa() {
 
-    var strRet = '<hr><fieldset><legend>Inserção Equipas: Nome das Equipas</legend><label>Nome da Equipa ' + (1) + ':</label> <input type="text"></input>';
+    var strRet = '<hr><fieldset><legend>Inserção Equipas: Nome das Equipas</legend><label>Nome da Equipa ' + (1) + ':</label> <input type="text" id="equipaId_1"></input>';
     for (var i = 1; i < oNumberQuantidade.value; i++) {
-        strRet += '<br><br><label>Nome da Equipa ' + (i + 1) + ':</label> <input type="text"></input>';
+        strRet += '<br><br><label>Nome da Equipa ' + (i + 1) + ':</label> <input type="text" id="'+"equipaId_"+(i+1)+'"></input>';
     };
     oSectionFeedback.innerHTML = oSectionFeedback.innerHTML + strRet;
-
     return false;
+}//criarCaixasNomeEquipas
+
+function criaArrayEquipas(){
+    for(let i = 1 ; i <= oNumberQuantidade ; i ++){
+        arrayEquipas[i] = document.getElementById("equipaId_"+i);
+    alert(arrayEquipas);
+    }
 }
+
 
 function comoReagirAoClickNoSubmit() {
     var bNomeAceitavel = !textoVazioNumInput(oTextTorneio);
@@ -114,14 +126,12 @@ function comoReagirAoClickNoSubmit() {
 }//comoReagirAoClickNoSubmit
 
 function comoReagirAoClickNoSubmit2() {
+   
+    criaArrayEquipas();
+    guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas();
     document.location.href = "index2.html";
+
     return false;
 }
 //comoReagirAoClickNoSubmit
 
-function comoReagirAoSubmitDaForm2() {
-    alert("Form submetida");
-    guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas();
-
-    return false;
-}//comoReagirAoSubmitDaForm
