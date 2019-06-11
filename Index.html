@@ -1,11 +1,45 @@
 <!DOCTYPE html>
-<html lang ="en">
-    <head>
-        <meta charset="UTF-8";>
-        <title > </title>
-        <script src="funct.js"></script>
-    </head>
-    <body>
+<html lang="en">
 
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão Torneio</title>
+    <script src="my_pattern.js"></script>
+    <script src="util.js"></script>
+    <script src="index.js"></script>
+    <script src="storage_utils.js"></script>
+</head>
+
+<body>
+    <h1>Gestão Torneio</h1>
+    <hr>
+    <details>
+        <!-- open? -->
+        <summary>Instruções</summary>
+        <p>O utilizador indica o número de equipas presentes e nome do torneio. </p>
+        <p>O Computador irá gerar a página para inserir equipas</p>
+        <p>A pontuação dependerá de:
+            <ul>
+                <li>Intervalo de jogo</li>
+                <li>Número de tentativas até adivinhar-se</li>
+                <li>Tempo necessário para adivinhar</li>
+            </ul>
+    </details>
+    <hr>
+    <form id="idFormCriar">
+        <fieldset>
+            <legend>Criação: Nome do Torneio e Quantidade de Equipas</legend>
+            <label for="idTextTorneio">Nome Torneio:</label>
+            <input type="text" id="idTextTorneio"><br>
+            <br>
+            <label for="idNumberQuantidade">Quantidade de Equipas:</label>
+            <input type="number" id="idNumberQuantidade" value="10"><br>
+        </fieldset>
+        <button id="idSubmitCriar">Criar Torneio</button>
+    </form>
+    <hr>
+    <section id="idSectionFeedback"></section>
+    <button id="idSubmitGerar">Gerar Eliminatórias</button>
+</body>
+
 </html>
