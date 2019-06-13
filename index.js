@@ -7,8 +7,11 @@ var ID_FORM_CRIAR = "idFormCriar",
     ID_SECTION_FEEDBACK = "idSectionFeedback",
     ID_SUBMIT_GERAR = "idSubmitGerar";
 
+
 var oFormCriar, oTextTorneio, oNumberQuantidade, oSubmitGerar,
     oSubmitCriar, oSectionFeedback;
+
+
 
 function boot() {
     //associações
@@ -50,14 +53,12 @@ function guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas() {
     if (storageDisponivel()) {
         escreverKV("key_nome", oTextTorneio.value);
         escreverKV("key_quantidade", Number(oNumberQuantidade.value));
-        for (var i = 1; i < oNumberQuantidade; i++) {
+        for (var i = 1; i <= oNumberQuantidade.value; i++) {
             escreverKV("key_arrayEquipas_" + i, document.getElementById("equipaId_" + i).value);
 
         }
-
     }
-}//guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas
-
+}
 function comoReagirAoSubmitDaForm() {
     alert("Form submetida");
 
@@ -108,4 +109,5 @@ function comoReagirAoClickNoSubmit2() {
     guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas();
     document.location.href = "index2.html";
     return false;
-}//comoReagirAoClickNoSubmit2
+}
+//comoReagirAoClickNoSubmit
