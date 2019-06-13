@@ -6,12 +6,9 @@ var ID_FORM_CRIAR = "idFormCriar",
     ID_SUBMIT_CRIAR = "idSubmitCriar",
     ID_SECTION_FEEDBACK = "idSectionFeedback",
     ID_SUBMIT_GERAR = "idSubmitGerar";
-    
 
 var oFormCriar, oTextTorneio, oNumberQuantidade, oSubmitGerar,
     oSubmitCriar, oSectionFeedback;
-
-var arrayEquipas = [];
 
 function boot() {
     //associações
@@ -34,20 +31,6 @@ function boot() {
         return;
     }
 
-    /*
-    atenção que onkeyup, com esta abordagem,
-    permitiria a entrada de teclas indesejadas,
-    pois keyup é um evento necessariamente posterior
-    a keydown, que - não sendo interceptado -
-    já teria sido permitido.
-     */
-    //comportamentos => +sobre event handlers
-
-    //testes();
-
-    //2019-05-20
-    //um dos padrões JS +usados no mundo inteiro
-
     //antes de deixar submeter os dados, o event handler
     //indicado abaixo, vai "policiar" os dados e decidir
     //se permite avançar-se para o submit (return true)
@@ -60,20 +43,24 @@ function boot() {
     //"botão" de submit rejeitar
     oFormCriar.onsubmit = comoReagirAoSubmitDaForm;
 
-    
+
 }//boot
 
 function guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas() {
     if (storageDisponivel()) {
         escreverKV("key_nome", oTextTorneio.value);
-        escreverKV("key_quantidade", Number(oNumberQuantidade));
-       //todo
-        escreverKV("key_arrayEquipas", arrayEquipas);
+        escreverKV("key_quantidade", Number(oNumberQuantidade.value));
+        for (var i = 1; i < oNumberQuantidade; i++) {
+            escreverKV("key_arrayEquipas_" + i, document.getElementById("equipaId_" + i).value);
+
+        }
+
     }
-}
+}//guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas
+
 function comoReagirAoSubmitDaForm() {
     alert("Form submetida");
-    guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas();
+
     criarCaixasNomeEquipa();
     oSubmitCriar.disabled = true;
     return false;
@@ -93,22 +80,13 @@ function textoVazioNumInput(oInputText) {
 }//textoVazioNumInput
 
 function criarCaixasNomeEquipa() {
-
     var strRet = '<hr><fieldset><legend>Inserção Equipas: Nome das Equipas</legend><label>Nome da Equipa ' + (1) + ':</label> <input type="text" id="equipaId_1"></input>';
     for (var i = 1; i < oNumberQuantidade.value; i++) {
-        strRet += '<br><br><label>Nome da Equipa ' + (i + 1) + ':</label> <input type="text" id="'+"equipaId_"+(i+1)+'"></input>';
+        strRet += '<br><br><label>Nome da Equipa ' + (i + 1) + ':</label> <input type="text" id="' + "equipaId_" + (i + 1) + '"></input>';
     };
     oSectionFeedback.innerHTML = oSectionFeedback.innerHTML + strRet;
     return false;
 }//criarCaixasNomeEquipas
-
-function criaArrayEquipas(){
-    for(let i = 1 ; i <= oNumberQuantidade ; i ++){
-        arrayEquipas[i] = document.getElementById("equipaId_"+i);
-    alert(arrayEquipas);
-    }
-}
-
 
 function comoReagirAoClickNoSubmit() {
     var bNomeAceitavel = !textoVazioNumInput(oTextTorneio);
@@ -126,12 +104,8 @@ function comoReagirAoClickNoSubmit() {
 }//comoReagirAoClickNoSubmit
 
 function comoReagirAoClickNoSubmit2() {
-   
-    criaArrayEquipas();
+    alert("Entrou");
     guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas();
     document.location.href = "index2.html";
-
     return false;
-}
-//comoReagirAoClickNoSubmit
-
+}//comoReagirAoClickNoSubmit2
