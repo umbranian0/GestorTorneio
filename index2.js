@@ -2,50 +2,36 @@ window.onload = boot;
 
 var ID_SECTION_FEEDBACK = "idSectionFeedback";
 
-var gamesArray = { equipas: [] };
-
-
 var oSectionFeedback, listOrdered, bracketCount;
 
 //organized games array
 var arrayEquipas = [];
-
-window.addEventListener("load", boot, false);
 
 function boot() {
   oSectionFeedback = $(ID_SECTION_FEEDBACK);
 
   bracketCount = 0;
 
-  gamesArray.equipas =  criaArrayEquipas();
-
-  listOrdered = shuffle(gamesArray.equipas);
-
-  console.log(arrayEquipas);
-
-
-  inserirEquipasnaPagina_Teste();
+  criaArrayEquipas();
 
   // getBracket();
 }//boot
 
 function criaArrayEquipas() {
-  console.log(lerK("key_arrayEquipas_1"));
-  for (var i = 1; i <= lerK("key_quantidade"); i++) {
-    arrayEquipas[i] = lerK("key_arrayEquipas_" + i);
+  for (var i = 0; i < lerK("key_quantidade"); i++) {
+    arrayEquipas[i] = lerK("key_arrayEquipas_" + (i + 1));
   }
-return arrayEquipas;
+
+  inserirEquipasnaPagina_Teste();
 
 }//criaArrayEquipas
 
 function inserirEquipasnaPagina_Teste() {
-  var strRet = arrayEquipas[0] + "<br>";
-  for (var i = 0; i <= lerK("key_quantidade"); i++) {
-
-    strRet += arrayEquipas[i + 1] + "<br>";
-
+  var strRet = "<h2>" + lerK("key_nome") + "</h2>" + "<hr>";
+  for (var i = 0; i < lerK("key_quantidade"); i++) {
+    strRet += arrayEquipas[i] + "<hr>";
   };
-  oSectionFeedback.innerHTML = oSectionFeedback.innerHTML + strRet;
+  oSectionFeedback.innerHTML = strRet;
 
   return false;
 
@@ -67,7 +53,7 @@ function shuffle(array) {
 }//suffle
 
 function getBracket(base) {
-  
+
   renderBrackets(brackets);
 }//get brackets
 
