@@ -11,8 +11,6 @@ var ID_FORM_CRIAR = "idFormCriar",
 var oFormCriar, oTextTorneio, oNumberQuantidade, oSubmitGerar,
     oSubmitCriar, oSectionFeedback;
 
-
-
 function boot() {
     //associações
     oFormCriar = $(ID_FORM_CRIAR);
@@ -34,17 +32,10 @@ function boot() {
         return;
     }
 
-    //antes de deixar submeter os dados, o event handler
-    //indicado abaixo, vai "policiar" os dados e decidir
-    //se permite avançar-se para o submit (return true)
-    //ou se NÃO permite avançar-se (return false)
-    oSubmitCriar.onclick = comoReagirAoClickNoSubmit;
-    oSubmitGerar.onclick = comoReagirAoClickNoSubmit2;
-    //aqui indicamos o que efetivamente ocorre perante
-    //submit
-    //mas isto pode nunca acontecer se o onclick para o
-    //"botão" de submit rejeitar
-    oFormCriar.onsubmit = comoReagirAoSubmitDaForm;
+    oSubmitCriar.onclick = comoReagirAoClickNoSubmitTorneio;
+    oSubmitGerar.onclick = comoReagirAoClickNoSubmitEquipas;
+   
+    oFormCriar.onsubmit = comoReagirAoSubmitDaFormTorneio;
 
 
 }//boot
@@ -53,17 +44,19 @@ function guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas() {
     if (storageDisponivel()) {
         escreverKV("key_nome", oTextTorneio.value);
         escreverKV("key_quantidade", Number(oNumberQuantidade.value));
-        for (var i = 1; i <= oNumberQuantidade.value; i++) {
+        for (var i = 0; i < oNumberQuantidade.value; i++) {
             escreverKV("key_arrayEquipas_" + i, document.getElementById("equipaId_" + i).value);
 
         }
     }
 }
-function comoReagirAoSubmitDaForm() {
+function comoReagirAoSubmitDaFormTorneio() {
     alert("Form submetida");
-
     criarCaixasNomeEquipa();
     oSubmitCriar.disabled = true;
+    oTextTorneio.disabled = true;
+    oNumberQuantidade.disabled = true;
+    oSubmitGerar.hidden = false;    
     return false;
 }//comoReagirAoSubmitDaForm
 
@@ -81,15 +74,15 @@ function textoVazioNumInput(oInputText) {
 }//textoVazioNumInput
 
 function criarCaixasNomeEquipa() {
-    var strRet = '<hr><fieldset><legend>Inserção Equipas: Nome das Equipas</legend><label>Nome da Equipa ' + (1) + ':</label> <input type="text" id="equipaId_1"></input>';
+    var strRet = '<hr><fieldset><legend>Inserção Equipas: Nome das Equipas</legend><label>Nome da Equipa ' + (1) + ':</label> <input type="text" id="equipaId_0"></input>';
     for (var i = 1; i < oNumberQuantidade.value; i++) {
-        strRet += '<br><br><label>Nome da Equipa ' + (i + 1) + ':</label> <input type="text" id="' + "equipaId_" + (i + 1) + '"></input>';
+        strRet += '<br><br><label>Nome da Equipa ' + (i + 1) + ':</label> <input type="text" id="' + "equipaId_" + (i) + '"></input>';
     };
     oSectionFeedback.innerHTML = oSectionFeedback.innerHTML + strRet;
     return false;
 }//criarCaixasNomeEquipas
 
-function comoReagirAoClickNoSubmit() {
+function comoReagirAoClickNoSubmitTorneio() {
     var bNomeAceitavel = !textoVazioNumInput(oTextTorneio);
     var bQuantidadeAceitavel = !textoVazioNumInput(oNumberQuantidade);
     var bDeixoJogar =
@@ -102,12 +95,12 @@ function comoReagirAoClickNoSubmit() {
         alert("Dados inválidos.");
         return false;
     }
-}//comoReagirAoClickNoSubmit
+}//comoReagirAoClickNoSubmitTorneio
 
-function comoReagirAoClickNoSubmit2() {
+function comoReagirAoClickNoSubmitEquipas() {
     alert("Entrou");
     guardarNaStorageOsDadosParaSeremUsadosNoutrasPaginas();
     document.location.href = "index2.html";
     return false;
 }
-//comoReagirAoClickNoSubmit
+//comoReagirAoClickNoSubmitEquipas
